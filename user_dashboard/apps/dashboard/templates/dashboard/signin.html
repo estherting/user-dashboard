@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en' dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SignIn</title>
+    <style>
+      nav {
+        border-bottom: 2px solid black;
+        padding: 5px;
+      }
+      nav p {
+        display: inline;
+      }
+      #home {
+        margin-right: 900px;
+      }
+      label{
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <p>Test App</p>
+      <a href="/" id="home">Home</a>
+      <a href="/signin">Signin</a>
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.error %} class="{{ message.error }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h1>Signin</h1>
+    <form action="/signin/process" method="POST">{%csrf_token%}
+      <label>
+        Email Address:
+        <input type="text" name="email">
+      </label>
+      <label>
+        Password:
+        <input type="password" name="password">
+      </label>
+      <button type="submit">Signin</button>
+    </form>
+    <a href="/register">Don't have an account? Register</a>
+  </body>
+</html>

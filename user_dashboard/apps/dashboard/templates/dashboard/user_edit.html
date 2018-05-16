@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en' dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit User</title>
+    <style>
+      nav {
+        border-bottom: 2px solid black;
+        padding: 5px;
+      }
+      nav p {
+        display: inline;
+      }
+      label{
+        display: block;
+      }
+      #profile-link {
+        margin-right: 900px;
+      }
+      form {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <p>Test App</p>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/users/show/{{signed_in_user.0.id}}" id="profile-link">Profile</a>
+      <a href="/logout">Logout</a>
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.error %} class="{{ message.error }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h1>Edit user</h1>
+
+    <form action="/users/user_edit/{{user.id}}/process" method="POST">{%csrf_token%}
+      <h3>Edit Information</h3>
+      <input type="hidden" name="info_to_process" value="user_info">
+      <label>
+        Email Address:
+        <input type="text" name="email" value={{user.email}}>
+      </label>
+      <label>
+        First Name:
+        <input type="text" name="first_name" value={{user.first_name}}>
+      </label>
+      <label>
+        Last Name:
+        <input type="text" name="last_name" value={{user.last_name}}>
+      </label>
+      <button type="submit">Save</button>
+    </form>
+
+    <form action="/users/user_edit/{{user.id}}/process" method="POST">{%csrf_token%}
+      <h3>Change Password</h3>
+      <input type="hidden" name="info_to_process" value="user_password">
+      <label>
+        Password:
+        <input type="password" name="password">
+      </label>
+      <label>
+        Confirm Password:
+        <input type="password" name="confirm_pw">
+      </label>
+      <button type="submit">Update Password</button>
+    </form>
+
+    <form action="/users/user_edit/{{user.id}}/process" method="POST">{%csrf_token%}
+      <h3>Edit Description</h3>
+      <input type="hidden" name="info_to_process" value="description">
+      <textarea type="text" name="description"></textarea>
+      <button type="submit">Update Password</button>
+    </form>
+  </body>
+</html>

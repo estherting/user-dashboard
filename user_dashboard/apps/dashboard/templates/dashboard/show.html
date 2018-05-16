@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang='en' dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+    <style>
+      nav {
+        border-bottom: 2px solid black;
+        padding: 5px;
+      }
+      nav p {
+        display: inline;
+      }
+      label{
+        display: block;
+      }
+      #profile-link {
+        margin-right: 900px;
+      }
+      #message-textarea {
+        width: 300px;
+      }
+      .message-block {
+        margin: 10px;
+        margin-top: 30px;
+      }
+      .comment-section {
+        margin: 10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <p>Test App</p>
+      <a href="/dashboard/admin">Dashboard</a>
+      <a href="/users/show/{{signed_in_user.0.id}}" id="profile-link">Profile</a>
+      <a href="/logout">Logout</a>
+    </nav>
+
+
+    <h2>{{user.first_name}} {{user.last_name}}</h2>
+    <p>Registered at: {{user.created_at}}</p>
+    <p>User ID: {{user.id}}</p>
+    <p>Email Address: {{user.email}}</p>
+    <p>Description: {{description.content}}</p>
+
+
+    <h2>Post a message to {{user.first_name}} {{user.last_name}}</h2>
+    <form action="/users/{{user.id}}/post_message" method="POST" id="message-textarea">{%csrf_token%}
+      <input type="hidden" name="post_to" value="{{user.id}}">
+      <textarea name="message" type="text"></textarea>
+      <button type="submit">Post a message</button>
+    </form>
+
+    {% for message in messages%}
+    <div class='message-block'>
+      <span class="name">{{message.written_by.first_name}} {{message.written_by.last_name}}-</span>
+      {{message.updated_at}}<br>
+      {{message.message}}
+
+      <form action="/users/{{user.id}}/post_comment" method="POST" class="comment-textarea">{%csrf_token%}
+        <div class="comment-section">
+          {%for comment in message.comments_received.all%}
+            {{comment.commented_by.first_name}} commented:
+            {{comment.comment}}<br>
+          {%endfor%}
+          <p>Post a comment</p>
+          <input type="hidden" name="replied_to" value={{message.id}}>
+          <textarea type="text" name="comment"></textarea>
+          <button type="submit">Comment</button>
+        </div>
+      </form>
+
+    </div>
+    {%endfor%}
+
+  </body>
+</html>

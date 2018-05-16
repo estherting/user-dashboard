@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en' dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Add New User</title>
+    <style>
+      nav {
+        border-bottom: 2px solid black;
+        padding: 5px;
+      }
+      nav p {
+        display: inline;
+      }
+      label{
+        display: block;
+      }
+      #profile-link {
+        margin-right: 900px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <p>Test App</p>
+      <a href="/dashboard/admin">Dashboard</a>
+      <a href="/users/show/{{signed_in_user.0.id}}" id="profile-link">Profile</a>
+      <a href="/logout">Logout</a>
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.error %} class="{{ message.error }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h1>Add a new user</h1>
+
+    <form action="/users/new/process" method="POST">{%csrf_token%}
+      <label>
+        Email Address:
+        <input type="text" name="email">
+      </label>
+      <label>
+        First Name:
+        <input type="text" name="first_name">
+      </label>
+      <label>
+        Last Name:
+        <input type="text" name="last_name">
+      </label>
+      <label>
+        Password:
+        <input type="password" name="password">
+      </label>
+      <label>
+        Confirm Password:
+        <input type="password" name="confirm_pw">
+      </label>
+      <button type="submit">Create</button>
+    </form>
+  </body>
+</html>
